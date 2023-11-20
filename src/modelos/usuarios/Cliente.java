@@ -1,17 +1,17 @@
 package modelos.usuarios;
 
-public class Cliente extends Usuario{
+public class Cliente extends UsuarioBase{
     
-    // Atributos propios de la clase Cliente
+    // Atributo de la clase Cliente
     private double saldo;
-    
-    // Constructor de Cliente
-    public Cliente(String nombre, String clave, String rol, double saldo){
-        super(nombre, clave, rol);
+
+    // Constructor de la clase Cliente que hereda el super() de la clase padre UsuarioBase
+    public Cliente(String nombreUsuario, String claveUsuario, double saldo) {
+        super(nombreUsuario, claveUsuario);
         this.saldo = saldo;
     }
 
-    // Getter y Setter
+    // Getters y Setters propios de la clase Cliente
     public double getSaldo() {
         return this.saldo;
     }
@@ -20,6 +20,11 @@ public class Cliente extends Usuario{
         this.saldo = saldo;
     }
 
-    
+   // Implementación del método getTipoUsuario() para Cliente
+   @Override
+   public String getTipoUsuario() {
+       return "CLIENTE";
+   }
+
     
 }

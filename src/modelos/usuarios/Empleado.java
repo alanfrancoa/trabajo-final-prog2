@@ -1,10 +1,22 @@
 package modelos.usuarios;
 
-public class Empleado extends Usuario {
-    
+public class Empleado extends UsuarioBase {
 
-    // Constructor de Empleado
-    public Empleado(String nombre, String clave, String rol){
-        super(nombre, clave, rol);
+    // Constructor de la clase Empleado que herada el super() de la clase padre
+    // Usuario
+    public Empleado(String nombreUsuario, String claveUsuario) {
+        super(nombreUsuario, claveUsuario);
     }
+
+    // Implementación del método getTipoUsuario() para Empleado
+    @Override
+    public String getTipoUsuario() {
+        return "EMPLEADO";
+    }
+
+   
+
+
+
+    
 }
