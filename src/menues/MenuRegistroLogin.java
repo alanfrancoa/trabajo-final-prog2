@@ -220,14 +220,17 @@ public class MenuRegistroLogin {
         // Si la clave es incorrecta lanzo un mensaje de error
         if (!validarClave) {
             System.out.println("Contraseña incorrecta. Inicio de sesión fallido.");
+            return;
         }
 
         // Caso contrario ingreso al menu dependiendo del rol de usuario A PARTIR DE ACA SE TIENE QUE SEGUIR
+
         // MENU EMPLEADOS
-            // STOCK
+            // ABM ARTICULOS (crear, editar, eliminar articulos)
+            // STOCK (ver y editar la cantidad de articulos)
         // MENU CLIENTE
-            // CARRITO
-            // SALDO
+            // CARRITO (mucho texto fijarse en el campus)
+            // SALDO (agregar dinero a la cuenta, retirar dinero, transferir a otro usuario)
         System.out.println("Inicio de sesión exitoso. ¡Bienvenido!");
 
     }
