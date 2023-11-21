@@ -1,6 +1,5 @@
 package menues;
 
-
 import java.util.Scanner;
 
 import modelos.usuarios.Cliente;
@@ -57,7 +56,7 @@ public class MenuCliente {
     private void verCarrito() {
         // Lógica para mostrar el carrito
         System.out.println("Has seleccionado la opción de VER CARRITO.");
-        // Aquí podrías implementar la lógica para mostrar el carrito del cliente
+        
     }
 
     private void verSaldo() {
@@ -68,7 +67,7 @@ public class MenuCliente {
     private void finalizarCompra() {
         // Lógica para finalizar la compra
         System.out.println("Has seleccionado la opción de FINALIZAR COMPRA.");
-        // Aquí podrías implementar la lógica para finalizar la compra del cliente
+        
     }
     private void realizarOpcion(int opcion) {
         switch (opcion) {
