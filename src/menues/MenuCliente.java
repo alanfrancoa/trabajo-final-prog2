@@ -4,11 +4,13 @@ import java.util.Scanner;
 
 import modelos.usuarios.Cliente;
 
-public class MenuCliente {
 
+
+public class MenuCliente {
     private boolean continuar = true;
     private Scanner sc;
     private Cliente cliente;
+
 
     public MenuCliente(Scanner sc, Cliente cliente) {
         this.sc = sc;

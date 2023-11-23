@@ -223,15 +223,27 @@ public class MenuRegistroLogin {
             return;
         }
 
-        // Caso contrario ingreso al menu dependiendo del rol de usuario A PARTIR DE ACA SE TIENE QUE SEGUIR
+        System.out.println("Inicio de sesión exitoso. ¡Bienvenido!");
+
+        // Obtengo el usuario mediante el nombre y la clave ingresada 
+        Usuario usuarioEncontrado = this.getUsuario(nombreUsuario, claveUsuario);
+
+        // Dependiendo del usuario encontrado si es Cliente o Empleado ejecuto el menu correspondiente
+        if (usuarioEncontrado instanceof Cliente) {
+            Cliente cliente = (Cliente) usuarioEncontrado;
+            MenuCliente mCliente = new MenuCliente(sc, cliente);
+            mCliente.iniciar();
+        } else if (usuarioEncontrado instanceof Empleado) {
+            MenuEmpleado mEmpleado = new MenuEmpleado(sc);
+            mEmpleado.iniciar();
+        }
 
         // MENU EMPLEADOS
-            // ABM ARTICULOS (crear, editar, eliminar articulos)
-            // STOCK (ver y editar la cantidad de articulos)
+        // ABM ARTICULOS (crear, editar, eliminar articulos)
+        // STOCK (ver y editar la cantidad de articulos)
         // MENU CLIENTE
-            // CARRITO (mucho texto fijarse en el campus)
-            // SALDO (agregar dinero a la cuenta, retirar dinero, transferir a otro usuario)
-        System.out.println("Inicio de sesión exitoso. ¡Bienvenido!");
+        // CARRITO (mucho texto fijarse en el campus)
+        // SALDO (agregar dinero a la cuenta, retirar dinero, transferir a otro usuario)
 
     }
 
@@ -311,6 +323,20 @@ public class MenuRegistroLogin {
 
         // Devuelvo el valor final de la premisa
         return sonIguales;
+    }
+
+    // Funcio que me devuelve un Usuario
+    private Usuario getUsuario(String nombreUsuario, String claveUsuario) {
+        Usuario usuarioEncontrado = null;
+
+        for (Usuario usuario : listaUsuarios) {
+            if (nombreUsuario.equals(usuario.getNombreUsuario()) && claveUsuario.equals(usuario.getClaveUsuario())) {
+                usuarioEncontrado = usuario;
+                break;
+            }
+        }
+
+        return usuarioEncontrado;
     }
 
 }

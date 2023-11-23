@@ -1,17 +1,14 @@
 package menues;
 
 import java.util.Scanner;
-import modelos.usuarios.Empleado;
+
 
 public class MenuEmpleado {
-
     private boolean continuar = true;
     private Scanner sc;
-    private Empleado empleado;
 
-    public MenuEmpleado(Scanner sc, Empleado empleado) {
+    public MenuEmpleado(Scanner sc) {
         this.sc = sc;
-        this.empleado = empleado;
     }
 
     private void mostrarOpciones() {
@@ -48,19 +45,19 @@ public class MenuEmpleado {
     private void mostrarStock() {
         // Lógica para mostrar el stock
         System.out.println("Has seleccionado la opción de MOSTRAR STOCK.");
-        
+
     }
 
     private void editarStock() {
         // Lógica para editar el stock ya sea agregar, editar o eliminar.
         System.out.println("Has seleccionado la opción de EDITAR STOCK.");
-        
+
     }
 
     private void mostrarCantidadProducto() {
         // Lógica para mostrar cantidad de un producto
         System.out.println("Has seleccionado la opción de MOSTRAR CANTIDAD DE UN PRODUCTO.");
-        
+
     }
 
     private void realizarOpcion(int opcion) {
