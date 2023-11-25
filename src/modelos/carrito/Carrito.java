@@ -16,12 +16,13 @@ public class Carrito {
     public void verCarrito() {
         System.out.println("----- Carrito de Compras -----");
         for (Renglon renglon : listaCompra) {
-            System.out.println("Producto: " + renglon.getProducto().getNombre() + " - Cantidad: " + renglon.getCantidad());
+            System.out.println(
+                    "Producto: " + renglon.getProducto().getNombre() + " - Cantidad: " + renglon.getCantidad());
         }
         System.out.println("-------------------------------");
     }
 
-    public double subTotal() {
+    public double verSaldo() {
         // Lógica para calcular el saldo total del carrito
         double saldoTotal = 0.0;
         for (Renglon renglon : listaCompra) {

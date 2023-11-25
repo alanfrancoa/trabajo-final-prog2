@@ -2,33 +2,37 @@ package modelos.articulos;
 
 public class Subsidiado extends Articulo {
 
+    // Atributo de Subsidiado
     private double precio_final;
-    private double descuentoRealizado;
 
+    // Constructor que herada los atributos de la clase abstracta
     public Subsidiado(int id_articulo, String nombre, double precio_neto, int stock, char rubro) {
         super(id_articulo, nombre, precio_neto, stock, rubro);
-        calcularDescuento();
+        this.precio_final = 0;
     }
 
-    private void calcularDescuento() {
-        double descuento;
+    // Setters
+    public void setPrecioFinal(double precio_final) {
+        this.precio_final = precio_final;
+    }
+
+    // Metodo para aplicar el descuento en base al rubro
+    private void setDescuento() {
+
         if (this.getRubro() == 'A') {
-            descuento = this.getPrecio_neto() * 0.3; // 30% de descuento para rubro A
+            double descuento = this.getPrecio_neto() * (30 / 100);
+            double precio_final = this.getPrecio_neto() - descuento;
+            this.setPrecioFinal(precio_final);
         } else if (this.getRubro() == 'B') {
-            descuento = this.getPrecio_neto() * 0.24; // 24% de descuento para rubro B
+            double descuento = this.getPrecio_neto() * (24 / 100);
+            double precio_final = this.getPrecio_neto() - descuento;
+            this.setPrecioFinal(precio_final);
+           
         } else {
-            descuento = this.getPrecio_neto() * 0.15; // 15% de descuento para otros rubros
+            double descuento = this.getPrecio_neto() * (15 / 100);
+            double precio_final = this.getPrecio_neto() - descuento;
+            this.setPrecioFinal(precio_final);
+
         }
-
-        this.descuentoRealizado = descuento;
-        this.precio_final = this.getPrecio_neto() - descuento;
-    }
-
-    public double getPrecioFinal() {
-        return precio_final;
-    }
-
-    public double getDescuentoRealizado() {
-        return descuentoRealizado;
     }
 }

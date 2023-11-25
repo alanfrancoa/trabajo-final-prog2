@@ -2,12 +2,11 @@ package modelos.articulos;
 
 public abstract class Articulo {
 
-    // Atributos
+    // Atriburos principales
     private int id_articulo;
     private String nombre;
     private double precio_neto;
     private int stock;
-    //private int demandado;
     private char rubro;
 
     // Constructor

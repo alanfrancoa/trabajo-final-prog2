@@ -250,13 +250,6 @@ public class MenuRegistroLogin {
             // Ejecuto la funcion iniciar() de Menu Empleado
             mEmpleado.iniciar();
         }
-
-        // MENU EMPLEADOS
-        // A
-        // MENU CLIENTE
-        // CARRITO (mucho texto fijarse en el campus)
-        // SALDO (agregar dinero a la cuenta, retirar dinero, transferir a otro usuario)
-
     }
 
     // Verificar la existencia del Usuario

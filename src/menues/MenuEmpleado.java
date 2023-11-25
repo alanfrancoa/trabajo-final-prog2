@@ -25,7 +25,7 @@ public class MenuEmpleado {
 
     private void mostrarOpciones() {
         System.out.println("---------------------------------------------");
-        System.out.println("BIENVENIDO - "+ empleado.getNombreUsuario());
+        System.out.println("MENÚ DE OPCIONES - EMPLEADO");
         System.out.println(" 0 - SALIR");
         System.out.println(" 1 - MOSTRAR STOCK");
         System.out.println(" 2 - EDITAR STOCK");
