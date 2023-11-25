@@ -2,6 +2,10 @@ package menues;
 
 import java.util.Scanner;
 
+import interfaces.Usuario;
+
+import java.util.List;
+
 import modelos.usuarios.Cliente;
 
 /*
@@ -19,18 +23,26 @@ import modelos.usuarios.Cliente;
  * - Si el usuario no tiene saldo suficiente, no se podra concretar la compra
  * - Finalizada la operacion se debera mostrar por pantalla los articulos comprados, el subtotal, el importe descontado y el total final
  * - Se debera descontrar los articulos del stock y reducir el saldo del usuario en base a la factura
- * 
+ * ❌Ver como se obtienen los descuentos(dtos por subsidio, producto demandando y dto en compra mayor a $12000) y mostrarlos por pantalla, al mostrar la compra.
  */
 
 public class MenuCliente {
     private boolean continuar = true;
     private Scanner sc;
     private Cliente cliente;
+    private List<Cliente> listaUsuarios;
 
 
-    public MenuCliente(Scanner sc, Cliente cliente) {
+    
+
+    public MenuCliente(boolean continuar, Scanner sc, Cliente cliente, List<Cliente> listaUsuarios) {
+        this.continuar = continuar;
         this.sc = sc;
         this.cliente = cliente;
+        this.listaUsuarios = listaUsuarios;
+    }
+
+    public MenuCliente(Scanner sc2, Cliente cliente2, List<Usuario> listaUsuarios2) {
     }
 
     private void mostrarOpciones() {
@@ -81,12 +93,79 @@ public class MenuCliente {
         // Lógica para ver el saldo del cliente
         System.out.println("Has seleccionado la opción de VER SALDO.");
         System.out.println("Saldo actual: " + cliente.getSaldo());
+        System.out.println("1- AGREGAR DINERO");
+        System.out.println("2- RETIRAR DINERO");
+        System.out.println("3- TRANSFERIR A OTRO CLIENTE");
+        int opcion = sc.nextInt();
+        switch(opcion){
+        case 1:
+        this.agregarDinero();
+        break;
+        case 2:
+        this.retirarDinero();
+        break;
+        case 3:
+        this.transferirDinero();
+        break;
+        }
+
     }
+    private void agregarDinero() {
+        System.out.println("Ingrese la cantidad de dinero a agregar:");
+        double cantidad = sc.nextDouble();
+        cliente.setSaldo(cliente.getSaldo() + cantidad);
+        System.out.println("Se agregó " + cantidad + " al saldo actual. Saldo actual: " + cliente.getSaldo());
+    }
+    
+    private void retirarDinero() {
+        System.out.println("Ingrese la cantidad de dinero a retirar:");
+        double cantidad = sc.nextDouble();
+        if (cliente.getSaldo() >= cantidad) {
+            cliente.setSaldo(cliente.getSaldo() - cantidad);
+            System.out.println("Se retiró " + cantidad + " del saldo actual. Saldo actual: " + cliente.getSaldo());
+        } else {
+            System.out.println("Saldo insuficiente para realizar la operación.");
+        }
+    }
+    
+    private void transferirDinero() {
+        System.out.println("Ingrese el nombre del destinatario:");
+        String nombreDestinatario = sc.next();
+    
+        Cliente destinatario = null;
+        for (Cliente cliente : listaUsuarios) {
+            if (cliente instanceof Cliente && cliente.getNombreUsuario().equalsIgnoreCase(nombreDestinatario)) {
+                destinatario = (Cliente) cliente;
+                break;
+            }
+        }
+    
+        if (destinatario != null) {
+            System.out.println("Ingrese la cantidad a transferir:");
+            double cantidadTransferir = sc.nextDouble();
+    
+            if (cliente.getSaldo() >= cantidadTransferir) {
+                cliente.setSaldo(cliente.getSaldo() - cantidadTransferir);
+                destinatario.setSaldo(destinatario.getSaldo() + cantidadTransferir);
+                System.out.println("Transferencia exitosa a " + destinatario.getNombreUsuario());
+                System.out.println("Nuevo saldo del remitente: " + cliente.getSaldo());
+            } else {
+                System.out.println("Saldo insuficiente para realizar la transferencia.");
+            }
+        } else {
+            System.out.println("El destinatario no es un cliente válido.");
+        }
+    }
+
+
     private void finalizarCompra() {
         // Lógica para finalizar la compra
+        
         System.out.println("Has seleccionado la opción de FINALIZAR COMPRA.");
+
         
     }
+
     private void realizarOpcion(int opcion) {
         switch (opcion) {
             case 0:
