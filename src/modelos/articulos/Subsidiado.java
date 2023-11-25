@@ -3,33 +3,32 @@ package modelos.articulos;
 public class Subsidiado extends Articulo {
 
     private double precio_final;
+    private double descuentoRealizado;
 
     public Subsidiado(int id_articulo, String nombre, double precio_neto, int stock, char rubro) {
         super(id_articulo, nombre, precio_neto, stock, rubro);
-        this.precio_final = 0;
+        calcularDescuento();
     }
 
-    public void setPrecioFinal(double precio_final) {
-        this.precio_final = precio_final;
-    }
-
-    private void setDescuento() {
-
+    private void calcularDescuento() {
+        double descuento;
         if (this.getRubro() == 'A') {
-            double descuento = this.getPrecio_neto() * (30 / 100);
-            double precio_final = this.getPrecio_neto() - descuento;
-            this.setPrecioFinal(precio_final);
+            descuento = this.getPrecio_neto() * 0.3; // 30% de descuento para rubro A
         } else if (this.getRubro() == 'B') {
-            double descuento = this.getPrecio_neto() * (24 / 100);
-            double precio_final = this.getPrecio_neto() - descuento;
-            this.setPrecioFinal(precio_final);
-           
+            descuento = this.getPrecio_neto() * 0.24; // 24% de descuento para rubro B
         } else {
-            double descuento = this.getPrecio_neto() * (15 / 100);
-            double precio_final = this.getPrecio_neto() - descuento;
-            this.setPrecioFinal(precio_final);
-
+            descuento = this.getPrecio_neto() * 0.15; // 15% de descuento para otros rubros
         }
+
+        this.descuentoRealizado = descuento;
+        this.precio_final = this.getPrecio_neto() - descuento;
     }
 
+    public double getPrecioFinal() {
+        return precio_final;
+    }
+
+    public double getDescuentoRealizado() {
+        return descuentoRealizado;
+    }
 }

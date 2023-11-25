@@ -21,7 +21,7 @@ public class Carrito {
         System.out.println("-------------------------------");
     }
 
-    public double verSaldo() {
+    public double subTotal() {
         // Lógica para calcular el saldo total del carrito
         double saldoTotal = 0.0;
         for (Renglon renglon : listaCompra) {

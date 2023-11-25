@@ -15,7 +15,7 @@ import modelos.usuarios.Cliente;
  *  - Agregar articulos (lista de articulos): estos deben ser agregados por codigo y se debe mostrar el listado completo de articulos
  *  - Se puede agregar mas de una vez
  *  - Se podra ver el importae total de articulos cargados en el momento
- *  - Si la compra es mayor a 12000 se aplicara un descuento del 15%
+ *  - Si la cl ompra es mayor a 12000 se aplicara un descuento de15%
  *  - Cuando el usuario desee finalizar se le ebe mostrar el usuario cuanto se va a gastar y su saldo. Debe confirmar la transaccion
  * - Si el usuario no tiene saldo suficiente, no se podra concretar la compra
  * - Finalizada la operacion se debera mostrar por pantalla los articulos comprados, el subtotal, el importe descontado y el total final
@@ -41,7 +41,7 @@ public class MenuCliente {
         System.out.println(" 0 - SALIR");
         System.out.println(" 1 - COMPRAR");
         System.out.println(" 2 - VER CARRITO");
-        System.out.println(" 3 - VER SALDO");
+        System.out.println(" 3 - SALDO");
         System.out.println(" 4 - FINALIZAR COMPRA");
         System.out.println("---------------------------------------------");
         System.out.print("Por favor, elija una opción: ");
@@ -82,12 +82,16 @@ public class MenuCliente {
         // Lógica para ver el saldo del cliente, falta agregar transferencias
         System.out.println("Has seleccionado la opción de VER SALDO.");
         System.out.println("Saldo actual: " + cliente.getSaldo());
-        System.out.println("1 - TRANSFERIR A OTRO CLIENTE");
+        System.out.println("1 - AGREGAR DINERO");
+        System.out.println("2 - RETIRAR DINERO");
+        System.out.println("3 - TRANSFERIR A OTRA PERSONA");
+        // hay que traer el arraylist de los clientes.
         System.out.println("0 - VOLVER");
     }
     private void finalizarCompra() {
         System.out.println("Has seleccionado la opción de FINALIZAR COMPRA.");
         compra.finalizarCompra();
+        cliente.setSaldo(cliente.getSaldo() - compra.subTotal() );
         //PENDIENTE DESCONTAR SALDO del cliente!!!
     }
     private void realizarOpcion(int opcion) {

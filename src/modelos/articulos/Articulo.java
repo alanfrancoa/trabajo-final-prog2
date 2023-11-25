@@ -7,6 +7,7 @@ public abstract class Articulo {
     private String nombre;
     private double precio_neto;
     private int stock;
+    //private int demandado;
     private char rubro;
 
     // Constructor
