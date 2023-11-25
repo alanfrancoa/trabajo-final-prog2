@@ -2,18 +2,30 @@ package menues;
 
 import java.util.Scanner;
 
+import modelos.usuarios.Empleado;
+
+/*
+ * Menu empleados:
+ * ABM ARTICULOS: crear, editar, eliminar articulo. 
+ * Ver un listado completo de Articulos
+ * STOCK: ver y editar la cantidad de cada uno de los articulos
+ * 
+ */
+
 
 public class MenuEmpleado {
     private boolean continuar = true;
     private Scanner sc;
+    private Empleado empleado;
 
-    public MenuEmpleado(Scanner sc) {
+    public MenuEmpleado(Scanner sc, Empleado empleado) {
         this.sc = sc;
+        this.empleado = empleado;
     }
 
     private void mostrarOpciones() {
         System.out.println("---------------------------------------------");
-        System.out.println("MENÚ DE OPCIONES - EMPLEADO");
+        System.out.println("BIENVENIDO - "+ empleado.getNombreUsuario());
         System.out.println(" 0 - SALIR");
         System.out.println(" 1 - MOSTRAR STOCK");
         System.out.println(" 2 - EDITAR STOCK");

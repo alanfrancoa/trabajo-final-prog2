@@ -2,14 +2,32 @@ package menues;
 
 import java.util.Scanner;
 
+import modelos.carrito.Carrito;
 import modelos.usuarios.Cliente;
 
-
+/*
+ * SALDO:
+ *  - Agregar dinero
+ *  - Retirar dinero
+ *  - Transferir a otro usuario (lista de Usarios de tipo       cliente)
+ * 
+ * CARRITO DE COMPRA:
+ *  - Agregar articulos (lista de articulos): estos deben ser agregados por codigo y se debe mostrar el listado completo de articulos
+ *  - Se puede agregar mas de una vez
+ *  - Se podra ver el importae total de articulos cargados en el momento
+ *  - Si la compra es mayor a 12000 se aplicara un descuento del 15%
+ *  - Cuando el usuario desee finalizar se le ebe mostrar el usuario cuanto se va a gastar y su saldo. Debe confirmar la transaccion
+ * - Si el usuario no tiene saldo suficiente, no se podra concretar la compra
+ * - Finalizada la operacion se debera mostrar por pantalla los articulos comprados, el subtotal, el importe descontado y el total final
+ * - Se debera descontrar los articulos del stock y reducir el saldo del usuario en base a la factura
+ * 
+ */
 
 public class MenuCliente {
     private boolean continuar = true;
     private Scanner sc;
     private Cliente cliente;
+    private Carrito compra;
 
 
     public MenuCliente(Scanner sc, Cliente cliente) {
@@ -52,24 +70,25 @@ public class MenuCliente {
     private void comprar() {
         // Lógica para realizar compras
         System.out.println("Has seleccionado la opción de COMPRAR.");
-        // Aquí se implementa la lógica de compra utilizando el objeto cliente
+        //Logica realizada en carrito, solo falta agregar al menu, la compra en si. 
     }
 
     private void verCarrito() {
-        // Lógica para mostrar el carrito
         System.out.println("Has seleccionado la opción de VER CARRITO.");
-        
+        compra.verCarrito();
     }
 
     private void verSaldo() {
-        // Lógica para ver el saldo del cliente
+        // Lógica para ver el saldo del cliente, falta agregar transferencias
         System.out.println("Has seleccionado la opción de VER SALDO.");
         System.out.println("Saldo actual: " + cliente.getSaldo());
+        System.out.println("1 - TRANSFERIR A OTRO CLIENTE");
+        System.out.println("0 - VOLVER");
     }
     private void finalizarCompra() {
-        // Lógica para finalizar la compra
         System.out.println("Has seleccionado la opción de FINALIZAR COMPRA.");
-        
+        compra.finalizarCompra();
+        //PENDIENTE DESCONTAR SALDO del cliente!!!
     }
     private void realizarOpcion(int opcion) {
         switch (opcion) {

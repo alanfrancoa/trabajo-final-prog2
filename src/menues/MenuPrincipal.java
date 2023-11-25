@@ -18,6 +18,8 @@ public class MenuPrincipal {
         this.listaUsuarios = listaUsuarios;
     }
 
+    // Genericos
+
     private void mostrarOpciones() {
         System.out.println("---------------------------------------------");
         System.out.println("BIENVENIDO A PURIN MARKET");
