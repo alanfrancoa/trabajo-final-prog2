@@ -46,7 +46,9 @@ public class MenuPrincipal {
 
             } catch (InputMismatchException e) {
                 this.sc.nextLine();
-                System.out.println("ERROR! Ingresa una opcion valida");
+                System.out.println("----------------------------------------------");
+                System.out.println("ERROR: INGRESE UNA OPCIÓN NUMERICA");
+                System.out.println("----------------------------------------------");
             }
 
         }

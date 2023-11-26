@@ -1,5 +1,6 @@
 package menues;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -52,35 +53,61 @@ public class MenuRegistroLogin {
 
     // Funcion para elegir una opcion
     private int elegirOpcion() {
-        this.mostrarOpciones();
-        int opcion = this.sc.nextInt();
-        return opcion;
+
+        while (true) {
+            int opcion;
+            try {
+                this.mostrarOpciones();
+                opcion = this.sc.nextInt();
+                return opcion;
+
+            } catch (InputMismatchException e) {
+                this.sc.nextLine();
+                System.out.println("----------------------------------------------");
+                System.out.println("ERROR: INGRESE UNA OPCIÓN NUMERICA");
+                System.out.println("----------------------------------------------");
+            }
+
+        }
+
     }
 
     // Funcion que sirve para elegir el rol ya sea para el registro como para el
-    // login
+
     private String elegirRol() {
 
-        boolean seguir = true;
+        while (true) {
+            int opcion;
+            String rolAsignado = "";
+            try {
+                this.mostrarOpcionRoles();
+                opcion = this.sc.nextInt();
+                switch (opcion) {
+                    case 1:
+                        rolAsignado = "cliente";
+                        break;
+                    case 2:
+                        rolAsignado = "empleado";
+                        break;
 
-        String rolAsignado = "";
+                    default:
+                        System.out.println("----------------------------------------------");
+                        System.out.println("ERROR: INGRESE UNA OPCIÓN VALIDA");
+                        System.out.println("----------------------------------------------");
+                        break;
+                }
 
-        while (seguir) {
-            this.mostrarOpcionRoles();
-            int opcion = this.sc.nextInt();
+                return rolAsignado;
 
-            if (opcion == 1) {
-                rolAsignado = "cliente";
-                seguir = false;
-            } else if (opcion == 2) {
-                rolAsignado = "empleado";
-                seguir = false;
-            } else {
-                System.out.println("Opcion invalida. Por favor, ingrese una opcion valida");
+            } catch (InputMismatchException e) {
+                this.sc.nextLine();
+                System.out.println("----------------------------------------------");
+                System.out.println("ERROR: INGRESE UNA OPCIÓN NUMERICA");
+                System.out.println("----------------------------------------------");
             }
+
         }
 
-        return rolAsignado;
     }
 
     // Funcion que realiza las acciones de LOGIN o de REGISTRO dependiendo de lo que
@@ -122,16 +149,28 @@ public class MenuRegistroLogin {
         System.out.print("Nombre de usuario: ");
         String nombreIngresado = this.sc.next();
 
+        // Validaciones con el nombre ingresado
+
+        // Verifico si el valor ingresado es un String
+        if (!validarString(nombreIngresado)) {
+            System.out.println("------------------------------------------------------------------------------");
+            System.out.println("ERROR: El nombre de usuario debe contener solo letras. Intente nuevamente. ");
+            System.out.println("------------------------------------------------------------------------------");
+            return;
+        }
+
         // Verifico si el nombre de usuario ingresado ya existe
         boolean existeUsuario = this.validarExistenciaUsuario(nombreIngresado);
 
         // Si el nombre del usuario existe lanzo un mensaje de error
         if (existeUsuario) {
-            System.out.println("El usuario ya existe. Por favor, elija otro nombre de usuario.");
+            System.out.println("------------------------------------------------------------------------------");
+            System.out.println("ERROR: El nombre de Usuario ya existe. Por favor, elija otro nombre de usuario.");
+            System.out.println("------------------------------------------------------------------------------");
             return;
         }
 
-        // Caso contrario procedo a seguir con el registro
+        // Si pasaron ambas validaciones sigo con el Registro
 
         // Ingreso la clave
         System.out.print("Contraseña: ");
@@ -144,19 +183,19 @@ public class MenuRegistroLogin {
         // Valido si ambas claves ingresadas son iguales
         boolean sonIguales = this.validarClaves(claveIngresada, confirmarClave);
 
-        // Si las contraseñas ingresadas no coinciden lanzo un mensaje de rror
         if (!sonIguales) {
-            System.out.println("Las contraseñas no coinciden. Intente nuevamente.");
+            System.out.println("------------------------------------------------------------------------------");
+            System.out.println("ERROR: Las constraseñas no coinciden, intente nuevamente.");
+            System.out.println("------------------------------------------------------------------------------");
             return;
         }
 
-        // Caso contrario procedo a seguir con el registro
+        // Si paso la validacion, sigo con el registro del usuario
 
         // Elijo un rol
         String rolIngresado = this.elegirRol();
 
-        // Si el rol que elegí para el usuario es EMPLEADO solicito la clave adicional y
-        // lo registro
+        // Si el valor de rolIngresado es "empleado" procedo con la verificacion extra
 
         if (rolIngresado.equals("empleado")) {
             System.out.print("Ingrese la clave de empleado: ");
@@ -165,7 +204,9 @@ public class MenuRegistroLogin {
             // Si la clave ingresada no es igual a la clave secreta para registrar el
             // empleado lanzo un mensaje de error
             if (!claveEmpleado.equals("pepepiola123")) {
-                System.out.println("Clave de empleado incorrecta. Registro fallido.");
+                System.out.println("--------------------------------------------------------");
+                System.out.println("ERROR: Clave incorrecta, registro de Empleado fallido");
+                System.out.println("--------------------------------------------------------");
                 return;
             }
 
@@ -174,6 +215,13 @@ public class MenuRegistroLogin {
 
             // Guardo ese nuevo empleado en la lista de Usuarios
             listaUsuarios.add(nuevoEmpleado);
+
+            // Muestro un mesaje de registro exitoso
+            System.out.println("--------------------------------------------------------");
+            System.out.println("REGISTRO EXITOSO! Se ha registrado un nuevo Empleado");
+            System.out.println("--------------------------------------------------------");
+
+            return;
         }
 
         // Si el rol que se le asigno es CLIENTE procedo a crear el nuevo cliente
@@ -181,7 +229,10 @@ public class MenuRegistroLogin {
 
         // Almaceno el nuevo cliente en la lista de clientes
         listaUsuarios.add(nuevoCliente);
-        System.out.println("Registro exitoso. ¡Bienvenido!");
+        System.out.println("--------------------------------------------------------");
+        System.out.println("REGISTRO EXITOSO! Se ha registrado un nuevo Cliente");
+        System.out.println("--------------------------------------------------------");
+        return;
 
     }
 
@@ -206,49 +257,37 @@ public class MenuRegistroLogin {
 
         // Si el usuario no existe lanzo un mensaje de error
         if (!existeUsuario) {
-            System.out.println("El usuario no existe. Por favor, registrese o vuelve a intentarlo");
+            System.out.println("------------------------------------------------------------");
+            System.out.println("ERROR: El usuario no existe, regístrese o inténtelo de nuevo");
+            System.out.println("------------------------------------------------------------");
             return;
         }
 
-        // Caso contrario procedo a seguir con el logueo
+        // Si paso la validacion procedo a seguir con el logueo
+
+        // Ingreso la contraseña del usuario
         System.out.print("Contraseña: ");
         String claveUsuario = this.sc.next();
 
-        // Verifico que la contraseña sea correcta
+        // Valido que la contraseña sea la correcta
         boolean validarClave = this.validarClave(claveUsuario);
 
         // Si la clave es incorrecta lanzo un mensaje de error
         if (!validarClave) {
-            System.out.println("Contraseña incorrecta. Inicio de sesión fallido.");
+            System.out.println("------------------------------------------------------------");
+            System.out.println("ERROR: Contraseña incorrecta, inicio de sesión fallido.");
+            System.out.println("------------------------------------------------------------");
             return;
         }
 
-        System.out.println("Inicio de sesión exitoso. ¡Bienvenido!");
+        System.out.println("------------------------------------------------------------");
+        System.out.println("INICIO DE SESIÓN EXITOSO! Bienvenidx!");
+        System.out.println("------------------------------------------------------------");
 
-        // Obtengo el usuario mediante el nombre y la clave ingresada 
-        Usuario usuarioEncontrado = this.getUsuario(nombreUsuario, claveUsuario);
+        this.direccionarAUnMenu(nombreUsuario, claveUsuario);
 
-        // Dependiendo del usuario encontrado si es Cliente o Empleado ejecuto el menu correspondiente
-        if (usuarioEncontrado instanceof Cliente) {
+        return;
 
-            // Primero convierto ese Usuario en tipo Cliente
-            Cliente cliente = (Cliente) usuarioEncontrado;
-
-            MenuCliente mCliente = new MenuCliente(sc, cliente, listaUsuarios);
-
-            // Ejecutar la funcion iniciar() de MenuCLiente
-            mCliente.iniciar();
-        } else if (usuarioEncontrado instanceof Empleado) {
-
-            // Primero convierto ese Usuario en tipo Empleado
-            Empleado empleado = new Empleado(nombreUsuario, claveUsuario);
-
-            // Instancio el menu de empleado que reciber el Scanner y el Empleado
-            MenuEmpleado mEmpleado = new MenuEmpleado(sc, empleado);
-
-            // Ejecuto la funcion iniciar() de Menu Empleado
-            mEmpleado.iniciar();
-        }
     }
 
     // Verificar la existencia del Usuario
@@ -329,19 +368,82 @@ public class MenuRegistroLogin {
         return sonIguales;
     }
 
-    // Funcio que me devuelve un Usuario
+    // Direccionar a un Menu
+    /*
+     * Esta funcion se va a encargar de:
+     * - Dependiendo del Usuario determina que tipo de Usuario es (Cliente o Empleado)
+     * - Dependiendo del tipo de Usuario me va a dirigir al menu específico
+     * - La función recibe por parpámetro:
+     * - El nombre del Usuario ya validado (String)
+     * - La contraseña del Usuario ya validada (String)
+     */
+    private void direccionarAUnMenu(String nombreUsuario, String claveUsuario) {
+
+        // Obtengo el usuario mediante el nombre y la clave ingresada
+        Usuario usuarioEncontrado = this.getUsuario(nombreUsuario, claveUsuario);
+
+        // Verifico si el usuarioEncontrado sea Cliente o Empleado
+
+        if (usuarioEncontrado instanceof Cliente) {
+
+            // Convierto al usuarioEncontrado en Cliente
+            Cliente cliente = (Cliente) usuarioEncontrado;
+
+            MenuCliente mCliente = new MenuCliente(sc, cliente, listaUsuarios);
+
+            // EjecutO la funcion iniciar() de MenuCLiente
+            mCliente.iniciar();
+
+        } else if (usuarioEncontrado instanceof Empleado) {
+
+            // Convierto al usuarioEncontrado en Empleado
+            Empleado empleado = new Empleado(nombreUsuario, claveUsuario);
+
+            // Instancio el menu de empleado que reciber el Scanner y el Empleado
+            MenuEmpleado mEmpleado = new MenuEmpleado(sc, empleado);
+
+            // Ejecuto la funcion iniciar() de Menu Empleado
+            mEmpleado.iniciar();
+        }
+    }
+
+    // Obtener un Usuario
+    /*
+     * Esta funcion se va a encargar de:
+     * - Obtener un usuario 
+     * - Para obtener un Usuario recibe por parámetro la siguiente información:
+     * - El nombre de Usuario (String)
+     * - La contraseña del Usuario (String)
+     */
     private Usuario getUsuario(String nombreUsuario, String claveUsuario) {
-        // Usuario Encontrado
+
+        // Variable axuliar que guardara un valor
         Usuario usuarioEncontrado = null;
 
+        // Recorro la listaUsuarios
         for (Usuario usuario : listaUsuarios) {
+
+            // Por cada usuario valido que su nombre sea igual al nombre ingresado y que su clave sea igual a la clave ingresada
             if (nombreUsuario.equals(usuario.getNombreUsuario()) && claveUsuario.equals(usuario.getClaveUsuario())) {
                 usuarioEncontrado = usuario;
                 break;
             }
         }
 
+        // Devuelvo el valor 
         return usuarioEncontrado;
+    }
+
+    // Validar String
+    /*
+     * Esta funcion se va a encargar de:
+     * - Validar que el ingreso del nombre de Usuario sea un String
+     * - Para que se valide su existencia recibe por parámetro:
+     * - El nombre ingresado (String)
+     */
+    private boolean validarString(String nombreIngresado) {
+        boolean esValido = nombreIngresado.matches("[a-zA-Z]+");
+        return esValido;
     }
 
 }

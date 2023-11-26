@@ -48,7 +48,7 @@ public abstract class Articulo {
     }
 
     public void setStock(int stock) {
-        this.stock += stock;
+        this.stock = stock;
     }
 
     public char getRubro() {
@@ -58,6 +58,9 @@ public abstract class Articulo {
     public void setRubro(char rubro) {
         this.rubro = rubro;
     }
+
+    // Metodos abstractos
+    public abstract double calcularDescuento();
 
     // Metodo toString()
     @Override

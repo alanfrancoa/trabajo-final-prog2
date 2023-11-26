@@ -4,11 +4,6 @@ import modelos.articulos.Articulo;
 
 public class Renglon {
 
-    @Override
-    public String toString() {
-        return "Renglon [cantidad=" + cantidad + ", producto=" + producto + "]";
-    }
-
     // Atributos
     private int cantidad;
     private Articulo producto;
