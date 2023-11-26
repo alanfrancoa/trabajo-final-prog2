@@ -6,6 +6,10 @@ public class Empleado extends UsuarioBase {
     private List<Articulo> listaDeArticulos;
 
 
+    public List<Articulo> getListaDeArticulos() {
+        return listaDeArticulos;
+    }
+
     // Constructor de la clase Empleado que hereda el super() de la clase padre Usuario
     public Empleado(String nombreUsuario, String claveUsuario) {
         super(nombreUsuario, claveUsuario);
@@ -31,6 +35,7 @@ public class Empleado extends UsuarioBase {
     public void eliminarArticulo(int codigoArticulo) {
         listaDeArticulos.removeIf(articulo -> articulo.getId_articulo() == codigoArticulo);
     }
+    
     // Implementación del método getTipoUsuario() para Empleado
     @Override
     public String getTipoUsuario() {

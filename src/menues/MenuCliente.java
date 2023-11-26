@@ -261,7 +261,7 @@ public class MenuCliente {
 
         // Caso contrario procedo con la transferencia
 
-        // Disminuzco el saldo del cliente
+        // Reduzco el saldo del cliente
         this.cliente.setSaldo(cliente.getSaldo() - cantidadTransferir);
 
         // Aumento el saldo del destinatario
