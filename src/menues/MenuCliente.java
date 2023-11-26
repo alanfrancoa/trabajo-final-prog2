@@ -5,14 +5,15 @@ import java.util.Scanner;
 import java.util.List;
 
 import modelos.carrito.Carrito;
+
 import modelos.usuarios.Cliente;
 import interfaces.Usuario;
 
 /*
  * SALDO:
- *  - Agregar dinero
- *  - Retirar dinero
- *  - Transferir a otro usuario (lista de Usarios de tipo       cliente)
+ *  - Agregar dinero✅
+ *  - Retirar dinero✅
+ *  - Transferir a otro usuario (lista de Usarios de tipo       cliente)✅
  * 
  * CARRITO DE COMPRA:
  *  - Agregar articulos (lista de articulos): estos deben ser agregados por codigo y se debe mostrar el listado completo de articulos
@@ -20,10 +21,10 @@ import interfaces.Usuario;
  *  - Se podra ver el importae total de articulos cargados en el momento
  *  - Si la compra es mayor a 12000 se aplicara un descuento del 15%
  *  - Cuando el usuario desee finalizar se le ebe mostrar el usuario cuanto se va a gastar y su saldo. Debe confirmar la transaccion
- * - Si el usuario no tiene saldo suficiente, no se podra concretar la compra
- * - Finalizada la operacion se debera mostrar por pantalla los articulos comprados, el subtotal, el importe descontado y el total final
- * - Se debera descontrar los articulos del stock y reducir el saldo del usuario en base a la factura
- * 
+ * - Si el usuario no tiene saldo suficiente, no se podra concretar la compra✅
+ * - Finalizada la operacion se debera mostrar por pantalla los articulos comprados, el subtotal, el importe descontado y el total final✅
+ * - Se debera descontrar los articulos del stock y reducir el saldo del usuario en base a la factura✅
+ * - Mostrar los descuentos aplicados(y aplicarlos en el monto de la compra). por tipo, por demandado, por compra superior a 12000
  */
 
 public class MenuCliente {
@@ -33,12 +34,14 @@ public class MenuCliente {
     private Scanner sc;
     private Cliente cliente;
     private List<Usuario> listaUsuarios;
+    private Carrito carrito;
 
     // Constructor
     public MenuCliente(Scanner sc, Cliente cliente, List<Usuario> listaUsuarios) {
         this.sc = sc;
         this.cliente = cliente;
         this.listaUsuarios = listaUsuarios;
+        this.carrito = new Carrito(); // Inicializamos el carrito
     }
 
     private void mostrarOpciones() {
@@ -109,7 +112,7 @@ public class MenuCliente {
     private void verCarrito() {
         // Lógica para mostrar el carrito
         System.out.println("Has seleccionado la opción de VER CARRITO.");
-
+        carrito.verCarrito();
     }
 
     // Lógica para ver el saldo del cliente
@@ -274,10 +277,25 @@ public class MenuCliente {
 
     private void finalizarCompra() {
         // Lógica para finalizar la compra
-
+        double totalCompra = carrito.verSaldo(); // Método para calcular el total de la compra
+        //Faltaria agregar aca los descuentos. 
+    
         System.out.println("Has seleccionado la opción de FINALIZAR COMPRA.");
-
+        System.out.println("------------------------------------------------------------------------------");
+        carrito.verCarrito();
+        System.out.println("------------------------------------------------------------------------------");
+        System.out.println("Total de la compra: " + totalCompra);
+    
+        if (cliente.getSaldo() >= totalCompra) {
+            cliente.setSaldo(cliente.getSaldo() - totalCompra);
+            System.out.println("Compra realizada con éxito. Saldo restante: " + cliente.getSaldo());
+        } else {
+            System.out.println("Saldo insuficiente. La compra no puede ser realizada.");
+        }
+        carrito.finalizarCompra();
     }
+
+
 
     private Cliente validarExistenciaUsuario(String nombreIngresado) {
 
