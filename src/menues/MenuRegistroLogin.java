@@ -234,7 +234,6 @@ public class MenuRegistroLogin {
             // Primero convierto ese Usuario en tipo Cliente
             Cliente cliente = (Cliente) usuarioEncontrado;
 
-            // Intancio el menu de cliente que recibe un Scaner y un Cliente
             MenuCliente mCliente = new MenuCliente(sc, cliente, listaUsuarios);
 
             // Ejecutar la funcion iniciar() de MenuCLiente

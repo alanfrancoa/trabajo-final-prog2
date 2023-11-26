@@ -48,7 +48,7 @@ public abstract class Articulo {
     }
 
     public void setStock(int stock) {
-        this.stock = stock;
+        this.stock += stock;
     }
 
     public char getRubro() {

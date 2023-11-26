@@ -3,9 +3,12 @@ package modelos.carrito;
 import modelos.articulos.Articulo;
 
 public class Renglon {
+
+    // Atributos
     private int cantidad;
     private Articulo producto;
 
+    // Constructor
     public Renglon(int cantidad, Articulo producto) {
         this.cantidad = cantidad;
         this.producto = producto;

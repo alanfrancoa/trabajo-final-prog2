@@ -41,6 +41,16 @@ public class MenuStock {
         System.out.print("Por favor, elija uno de los rubros: ");
     }
 
+    private void mostrarOpcionCamposArticulo() {
+        System.out.println("---------------------------------------------");
+        System.out.println("Campos a editar: ");
+        System.out.println("1 - NOMBRE");
+        System.out.println("2 - PRECIO");
+        System.out.println("3 - STOCK");
+        System.out.println("---------------------------------------------");
+        System.out.print("Por favor, elija uno de los campos a editar: ");
+    }
+
     public void iniciar() {
         while (continuar) {
             int opcion = this.elegirOpcion();
@@ -54,6 +64,7 @@ public class MenuStock {
         return opcion;
     }
 
+    // Funcion para determinar el rubro del producto
     private char elegirRubro() {
 
         boolean seguir = true;
@@ -63,6 +74,8 @@ public class MenuStock {
 
         // Hago el bucle
         while (seguir) {
+
+            // Muestros las opciones
             this.mostrarOpcionRubros();
 
             // Variable que guarda mi eleccion
@@ -132,10 +145,10 @@ public class MenuStock {
         int id = sc.nextInt();
 
         // Valido que el numero de ID ingresado no lo este ocupando un articulo
-        boolean existeArticulo = this.existeArticulo(id);
+        Articulo existeArticulo = this.existeArticulo(id);
 
         // Si existe entonces muestro un mensaje de Error
-        if (existeArticulo) {
+        if (existeArticulo != null) {
             System.out.println("-------------------------------------");
             System.out.println("ERROR! El id del articulo ya existe, por favor ingrese otro");
             System.out.println("-------------------------------------");
@@ -187,20 +200,97 @@ public class MenuStock {
     }
 
     // Meotod para validar la existencia de un Articulo
-    private boolean existeArticulo(int numeroIngresado) {
+    private Articulo existeArticulo(int numeroIngresado) {
+        Articulo articuloExistente = null;
         for (Articulo articulo : listaArticulos) {
             if (articulo.getId_articulo() == numeroIngresado) {
-                return true;
+                articuloExistente = articulo;
+                break;
             }
         }
-        return false; // Si no se encuentra el artículo, retorna falso
+        return articuloExistente; // Si no se encuentra el artículo, retorna falso
     }
 
     // Metodo que sirve para editar un Articulo
     private void editarArticulo() {
         // Lógica para editar un artículo existente en la lista
         System.out.println("Has seleccionado la opción de EDITAR ARTÍCULO.");
+
         // Implementa la lógica para editar un artículo existente en listaArticulos
+        System.out.print("Ingrese el numero de identificacion del articulo: ");
+        int id = sc.nextInt();
+
+        Articulo articuloAEditar = this.existeArticulo(id);
+
+        if (articuloAEditar == null) {
+            System.out.println("-------------------------------------");
+            System.out.println("ERROR! No existe tal articulo.");
+            System.out.println("-------------------------------------");
+            return;
+        }
+
+        this.mostrarOpcionCamposArticulo();
+        int opcion = this.sc.nextInt();
+
+        switch (opcion) {
+            case 1:
+                this.editarNombre(articuloAEditar);
+                break;
+            case 2:
+                this.editarPrecio(articuloAEditar);
+            case 3:
+                this.editarStock(articuloAEditar);
+                break;
+
+            default:
+                System.out.println("-------------------------------------");
+                System.out.println("ERROR! Por favor, elija una opcion correcta.");
+                System.out.println("-------------------------------------");
+                break;
+        }
+    }
+
+    private void editarNombre(Articulo articulo) {
+        System.out.print("Ingrese el nuevo nombre del articulo: ");
+        String nuevoNombreIngresado = this.sc.next();
+        articulo.setNombre(nuevoNombreIngresado);
+    }
+
+    private void editarPrecio(Articulo articulo) {
+        boolean continuar = true;
+        
+        while (continuar) {
+            System.out.print("Ingrese el nuevo precio del articulo: ");
+            double nuevoPrecio = this.sc.nextDouble();
+            if (nuevoPrecio < 0) {
+                System.out.println("-------------------------------------");
+                System.out.println("ERROR! Por favor, elija un precio correcto.");
+                System.out.println("-------------------------------------");
+            }
+            articulo.setPrecio_neto(nuevoPrecio);
+            continuar = false;
+        }
+
+    }
+
+    private void editarStock(Articulo articulo) {
+
+        boolean continuar = true;
+        while (continuar) {
+            System.out.print("Ingrese la cantidad: ");
+            int cantidadIngresada = this.sc.nextInt();
+
+            if (cantidadIngresada < 0) {
+                System.out.println("-------------------------------------");
+                System.out.println("ERROR! Por favor, elija una cantidad correcta.");
+                System.out.println("-------------------------------------");
+                return;
+            }
+
+            articulo.setStock(cantidadIngresada);
+            continuar = false;
+        }
+
     }
 
     // Metodo que sirve para eliminar un Articulo

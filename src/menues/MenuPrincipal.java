@@ -1,11 +1,10 @@
 package menues;
 
-
 import java.util.List;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 import interfaces.Usuario;
-
 
 public class MenuPrincipal {
 
@@ -37,9 +36,21 @@ public class MenuPrincipal {
     }
 
     private int elegirOpcion() {
-        this.mostrarOpciones();
-        int opcion = this.sc.nextInt();
-        return opcion;
+
+        while (true) {
+            int opcion;
+            try {
+                this.mostrarOpciones();
+                opcion = this.sc.nextInt();
+                return opcion;
+
+            } catch (InputMismatchException e) {
+                this.sc.nextLine();
+                System.out.println("ERROR! Ingresa una opcion valida");
+            }
+
+        }
+
     }
 
     private void finalizar() {
