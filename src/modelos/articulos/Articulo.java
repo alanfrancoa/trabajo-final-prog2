@@ -60,7 +60,7 @@ public abstract class Articulo {
     }
 
     // Metodos abstractos
-    public abstract double calcularDescuento();
+    public abstract double calcularPrecioFinal();
 
     // Metodo toString()
     @Override

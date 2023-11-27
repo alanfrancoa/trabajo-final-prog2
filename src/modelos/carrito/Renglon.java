@@ -1,6 +1,8 @@
 package modelos.carrito;
 
 import modelos.articulos.Articulo;
+import modelos.articulos.Demandado;
+import modelos.articulos.Subsidiado;
 
 public class Renglon {
 
@@ -31,11 +33,28 @@ public class Renglon {
     }
 
     public double calcularPrecioTotal() {
-        return this.cantidad * this.producto.getPrecio_neto();
+        double precioTotal = this.cantidad * this.producto.getPrecio_neto();
+        return precioTotal;
     }
 
-    public double mostrarDescuento() {
-        // Aca va la logica para retornar los descuentos de cada producto
-        return 0.0; // Modificar esto
+    public void mostrarDescuento() {
+        
+        if (this.producto instanceof Subsidiado) {
+
+            double descuentoSubsidiado = 1 - ((Subsidiado) producto).calcularPrecioFinal() / producto.getPrecio_neto() * 100 ;
+
+            System.out.println("Descuento Subsidiado: " + descuentoSubsidiado + "%");
+
+        } else if (this.producto instanceof Demandado){
+
+            double porcentajeExcedido = ((double) producto.getStock() / ((Demandado) producto).getStockDeseado() - 1) * 100;
+
+            double descuento = Math.min(porcentajeExcedido, 50);
+            
+            System.out.println("Descuento Demandado: " + descuento + "%");
+        } else {
+            System.out.println("Sin descuento");
+        }
+       
     }
 }

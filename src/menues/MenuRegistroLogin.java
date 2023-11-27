@@ -14,6 +14,7 @@ public class MenuRegistroLogin {
     List<Usuario> listaUsuarios;
     private Scanner sc;
     private boolean continuar = true;
+    private static final String CLAVE_SECRETA_EMPLEADO = "pepepiola123";
 
     // Constructor
     public MenuRegistroLogin(List<Usuario> listaUsuarios, Scanner sc) {
@@ -203,7 +204,7 @@ public class MenuRegistroLogin {
 
             // Si la clave ingresada no es igual a la clave secreta para registrar el
             // empleado lanzo un mensaje de error
-            if (!claveEmpleado.equals("pepepiola123")) {
+            if (!claveEmpleado.equals(CLAVE_SECRETA_EMPLEADO)) {
                 System.out.println("--------------------------------------------------------");
                 System.out.println("ERROR: Clave incorrecta, registro de Empleado fallido");
                 System.out.println("--------------------------------------------------------");

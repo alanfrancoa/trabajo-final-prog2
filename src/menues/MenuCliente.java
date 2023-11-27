@@ -4,15 +4,18 @@ import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.util.List;
 
+import modelos.articulos.Articulo;
 import modelos.carrito.Carrito;
+import modelos.carrito.Renglon;
 import modelos.usuarios.Cliente;
+import modelos.usuarios.Empleado;
 import interfaces.Usuario;
 
 /*
  * SALDO:
  *  - Agregar dinero
  *  - Retirar dinero
- *  - Transferir a otro usuario (lista de Usarios de tipo       cliente)
+ *  - Transferir a otro usuario (lista de Usarios de tipo cliente)
  * 
  * CARRITO DE COMPRA:
  *  - Agregar articulos (lista de articulos): estos deben ser agregados por codigo y se debe mostrar el listado completo de articulos
@@ -33,14 +36,17 @@ public class MenuCliente {
     private Scanner sc;
     private Cliente cliente;
     private List<Usuario> listaUsuarios;
+    private Carrito carrito;
 
     // Constructor
     public MenuCliente(Scanner sc, Cliente cliente, List<Usuario> listaUsuarios) {
         this.sc = sc;
         this.cliente = cliente;
         this.listaUsuarios = listaUsuarios;
+        this.carrito = new Carrito();
     }
 
+    // --------------------------- GENERICOS ---------------------------
     private void mostrarOpciones() {
         System.out.println("---------------------------------------------");
         System.out.println("MENÚ DE OPCIONES - CLIENTE");
@@ -51,6 +57,16 @@ public class MenuCliente {
         System.out.println(" 4 - FINALIZAR COMPRA");
         System.out.println("---------------------------------------------");
         System.out.print("Por favor, elija una opción: ");
+    }
+
+    private void mostrarOpcionesSaldo() {
+        System.out.println("------------------- MODULO SALDO -------------------");
+        System.out.println("Elija una de las siguientes opciones: ");
+        System.out.println("1- AGREGAR DINERO");
+        System.out.println("2- RETIRAR DINERO");
+        System.out.println("3- TRANSFERIR A OTRO CLIENTE");
+        System.out.print("Opcion elegida: ");
+        System.out.println("----------------------------------------------------");
     }
 
     public void iniciar() {
@@ -79,6 +95,7 @@ public class MenuCliente {
         }
 
     }
+
     private void realizarOpcion(int opcion) {
         switch (opcion) {
             case 0:
@@ -112,34 +129,82 @@ public class MenuCliente {
         System.out.println("----------------------------------------------");
     }
 
+    // --------------------------- MODULO COMPRA ---------------------------
+
     // Funcion para realizar una compra
     private void comprar() {
         // Lógica para realizar compras
         System.out.println("Has seleccionado la opción de COMPRAR.");
-        // Aquí se implementa la lógica de compra utilizando el objeto cliente
+
+        this.verListaDeArticulos();
+
+        System.out.println("Ingrese el código del artículo que desea comprar (0 para salir):");
+        int codigoArticulo = this.ingresarCodigo();
+
+        while (codigoArticulo != 0) {
+
+            // Busca el artículo en la lista de artículos disponibles
+            Articulo articuloSeleccionado = buscarArticuloPorCodigo(codigoArticulo);
+
+            if (articuloSeleccionado == null) {
+                System.out.println("----------------------------------------------------------------------");
+                System.out.println("ERROR: El articulo no existe, intente ingresar un articulo existente ");
+                System.out.println("-----------------------------------------------------------------------");
+                return;
+            }
+
+            System.out.println("Ingrese la cantidad que desea comprar:");
+            int cantidadIngresada = sc.nextInt();
+
+            // Verifica si hay suficiente stock
+            if (articuloSeleccionado.getStock() < cantidadIngresada) {
+                System.out.println("--------------------------------------------");
+                System.out.println("ERROR: No hay suficiente stock disponible");
+                System.out.println("-----------------------------------------");
+                return;
+            }
+
+            // Agrega el artículo al carrito
+            Renglon productoAAgregar = new Renglon(cantidadIngresada, articuloSeleccionado);
+            carrito.agregar(productoAAgregar);
+
+            System.out.println("--------------------------------------------");
+            System.out.println("Producto agregado al carrito");
+            System.out.println("-----------------------------------------");
+
+            // Actualiza el stock del artículo en la lista de artículos disponibles
+            articuloSeleccionado.setStock(articuloSeleccionado.getStock() - cantidadIngresada);
+
+            // Vuelvo a preguntar para seguir o para terminar
+            System.out.println("Ingrese el código del siguiente artículo que desea comprar (0 para salir):");
+            codigoArticulo = sc.nextInt();
+        }
+
     }
 
     private void verCarrito() {
-        // Lógica para mostrar el carrito
+        
         System.out.println("Has seleccionado la opción de VER CARRITO.");
+        carrito.verCarrito();
 
     }
+
+    private void finalizarCompra() {
+         System.out.println("Has seleccionado la opción de FINALIZAR COMPRA.");
+        carrito.finalizarCompra(cliente, listaUsuarios);
+    }
+
+    // --------------------------- MODULO SALDO ---------------------------
 
     // Lógica para ver el saldo del cliente
     private void verSaldo() {
 
-        System.out.println("----------------------------------------------");
+        System.out.println("------------------- SALDO ACTUAL -------------------");
         System.out.println("Has seleccionado la opción de VER SALDO.");
-        System.out.println("Saldo actual: " + cliente.getSaldo());
-        System.out.println("----------------------------------------------");
-        System.out.println("Elija una de las siguientes opciones: ");
-        System.out.println("1- AGREGAR DINERO");
-        System.out.println("2- RETIRAR DINERO");
-        System.out.println("3- TRANSFERIR A OTRO CLIENTE");
-        System.out.print("Opcion elegida: ");
-        System.out.println("----------------------------------------------");
+        System.out.println("SALDO ACTUAL: " + cliente.getSaldo());
 
-        int opcion = sc.nextInt();
+        int opcion = this.elegirOpcionModuloSaldo();
+
         switch (opcion) {
             case 1:
                 this.agregarDinero();
@@ -150,38 +215,37 @@ public class MenuCliente {
             case 3:
                 this.transferirDinero();
                 break;
+            default:
+                System.out.println("------------------------------------------------------------------------------");
+                System.out.println("OPCION INCORRECTA. Elija una opcion valida.");
+                System.out.println("------------------------------------------------------------------------------");
+                break;
         }
 
     }
 
+    // --------------------------- METODOS DEL MENU CLIENTE ---------------------------
+
     // Metodo que agrega dinero a la cuenta del cliente
     private void agregarDinero() {
 
-        boolean continuar = true;
+        double cantidadIngresada = this.ingresarSaldo();
 
-        while (continuar) {
-
-            System.out.println("Ingrese la cantidad de dinero a agregar:");
-            double cantidadIngresada = sc.nextDouble();
-
-            if (cantidadIngresada < 0) {
-                System.out.println("------------------------------------------------");
-                System.out.println("ERROR! Por favor, elija una cantidad correcta.");
-                System.out.println("-------------------------------------------------");
-                return;
-            }
-
-            this.cliente.setSaldo(cliente.getSaldo() + cantidadIngresada);
-
-            System.out.println(
-                    "----------------------------------------------------------------------------------------");
-            System.out.println(
-                    "Se agregó " + cantidadIngresada + " al saldo actual. SALDO ACTUAL: " + cliente.getSaldo());
-            System.out.println(
-                    "----------------------------------------------------------------------------------------");
-
-            continuar = false;
+        if (cantidadIngresada < 0) {
+            System.out.println("------------------------------------------------");
+            System.out.println("ERROR! Por favor, elija una cantidad correcta.");
+            System.out.println("-------------------------------------------------");
+            return;
         }
+
+        this.cliente.setSaldo(cliente.getSaldo() + cantidadIngresada);
+
+        System.out.println(
+                "----------------------------------------------------------------------------------------");
+        System.out.println(
+                "Se agregó " + cantidadIngresada + " al saldo actual. SALDO ACTUAL: " + cliente.getSaldo());
+        System.out.println(
+                "----------------------------------------------------------------------------------------");
 
     }
 
@@ -247,8 +311,8 @@ public class MenuCliente {
         // Si me devuelve un Cliente, procedo con la transferencia
 
         // Ingreso la cantidad a transferir
-        System.out.print("Ingrese la cantidad a transferir:");
-        double cantidadTransferir = sc.nextDouble();
+        
+        double cantidadTransferir = this.ingresarCantidad();
 
         // Valido que la cantidad a transferir sea positiva
 
@@ -285,12 +349,7 @@ public class MenuCliente {
 
     }
 
-    private void finalizarCompra() {
-        // Lógica para finalizar la compra
-
-        System.out.println("Has seleccionado la opción de FINALIZAR COMPRA.");
-
-    }
+    // Metodos del menu Cliente
 
     private Cliente validarExistenciaUsuario(String nombreIngresado) {
 
@@ -313,4 +372,113 @@ public class MenuCliente {
         return clienteEncontrado;
     }
 
+    private double ingresarSaldo() {
+        while (true) {
+            double saldo;
+            try {
+                System.out.print("Ingrese la cantidad de dinero a agregar:");
+                saldo = this.sc.nextDouble();
+                return saldo;
+            } catch (InputMismatchException e) {
+                this.sc.nextLine();
+                System.out.println("----------------------------------------------");
+                System.out.println("ERROR: INGRESE UN VALOR NUMERICO");
+                System.out.println("----------------------------------------------");
+            }
+        }
+    }
+
+    private int elegirOpcionModuloSaldo() {
+
+        while (true) {
+            int opcion;
+            try {
+                this.mostrarOpcionesSaldo();
+                opcion = this.sc.nextInt();
+                return opcion;
+
+            } catch (InputMismatchException e) {
+                this.sc.nextLine();
+                System.out.println("----------------------------------------------");
+                System.out.println("ERROR: INGRESE UNA OPCIÓN NUMERICA");
+                System.out.println("----------------------------------------------");
+            }
+
+        }
+
+    }
+
+    private int ingresarCodigo() {
+
+        while (true) {
+            int codigoIngresado;
+            try {
+                codigoIngresado = this.sc.nextInt();
+                return codigoIngresado;
+            } catch (InputMismatchException e) {
+                this.sc.nextLine();
+                System.out.println("----------------------------------------------");
+                System.out.println("ERROR: INGRESE UN VALOR NUMERICO");
+                System.out.println("----------------------------------------------");
+            }
+        }
+
+    }
+
+    private void verListaDeArticulos() {
+        for (Usuario usuario : listaUsuarios) {
+            if (usuario instanceof Empleado) {
+                List<Articulo> listaArticulos = ((Empleado) usuario).getListaDeArticulos();
+                System.out.println("--------------------------------------------------------");
+                for (Articulo articulo : listaArticulos) {
+                    System.out.println("CODIGO: " + articulo.getId_articulo());
+                    System.out.println("NOMBRE: " + articulo.getNombre());
+                    System.out.println("PRECIO: " + articulo.calcularPrecioFinal());
+                    System.out.println("STOCK: " + articulo.getStock());
+                }
+                System.out.println("--------------------------------------------------------");
+            }
+        }
+    }
+
+    private Articulo buscarArticuloPorCodigo(int codigoIngresado) {
+
+        Articulo articuloEcontrado = null;
+
+        // Lógica para buscar un artículo por su código
+        for (Usuario usuario : listaUsuarios) {
+            if (usuario instanceof Empleado) {
+                // Obtener la lista de artículos del empleado
+                List<Articulo> articulosDisponibles = ((Empleado) usuario).getListaDeArticulos();
+
+                // Buscar el artículo por su código
+                for (Articulo articulo : articulosDisponibles) {
+                    if (articulo.getId_articulo() == codigoIngresado) {
+                        articuloEcontrado = articulo;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return articuloEcontrado;
+    }
+
+    private double ingresarCantidad(){
+        while (true) {
+            double cantidadIngresada;
+            try {
+                System.out.print("Ingrese la cantidad a transferir:");
+                cantidadIngresada = this.sc.nextDouble();
+                return cantidadIngresada;
+
+            } catch (InputMismatchException e) {
+                this.sc.nextLine();
+                System.out.println("----------------------------------------------");
+                System.out.println("ERROR: INGRESE UNA OPCIÓN NUMERICA");
+                System.out.println("----------------------------------------------");
+            }
+
+        }
+    }
 }

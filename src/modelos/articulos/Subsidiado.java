@@ -7,15 +7,20 @@ public class Subsidiado extends Articulo {
         super(id_articulo, nombre, precio_neto, stock, rubro);
     }
 
+    // Aplicar descuento segun categoria
     @Override
-    public double calcularDescuento() {
-        if (this.getRubro() == 'A') {
-            return 0.3;
-        } else if (this.getRubro() == 'B') {
-            return 0.24;
-        } else {
-            return 0.15;
+    public double calcularPrecioFinal() {
+        switch (this.getRubro()) {
+            case 'A':
+                return this.getPrecio_neto() * 0.7; // Descuento del 30%
+            case 'B':
+                return this.getPrecio_neto() * 0.76; // Descuento del 24%
+            case 'C':
+                return this.getPrecio_neto() * 0.85; // Descuento del 15%
+            default:
+                return this.getPrecio_neto();
         }
+        
     }
 
 }

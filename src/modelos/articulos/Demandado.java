@@ -11,12 +11,23 @@ public class Demandado extends Articulo {
         this.stockDeseado = stockDeseado;
     }
 
+    // Getter
+    public int getStockDeseado(){
+        return this.stockDeseado;
+    }
+
     // Metodo abstracto 
     @Override
-    public double calcularDescuento() {
+    public double calcularPrecioFinal() {
 
-        int excedente = Math.max(0, this.getStock() - stockDeseado);
-        double porcentajeDescuento = Math.min(0.5, excedente / (double) stockDeseado);
-        return porcentajeDescuento;
+        // Calcular el porcentaje excedido
+        double porcentajeExcedido = ((double) this.getStock() / stockDeseado - 1) * 100;
+        
+        // Aplica descuento con un máximo del 50%
+        double descuento = Math.min(porcentajeExcedido, 50);
+
+        // Precio final
+        double precioFinal = this.getPrecio_neto() * (1 - descuento / 100);
+        return precioFinal;
     }
 }

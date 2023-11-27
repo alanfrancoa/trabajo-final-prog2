@@ -6,7 +6,7 @@ public class Simple extends Articulo {
     }
 
     @Override
-    public double calcularDescuento() {
-        return 0; // No hay descuento para artículos simples
+    public double calcularPrecioFinal() {
+        return this.getPrecio_neto();
     }
 }

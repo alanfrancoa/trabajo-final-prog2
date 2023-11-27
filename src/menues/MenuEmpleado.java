@@ -239,6 +239,8 @@ public class MenuEmpleado {
         System.out.println("----------------------------------------------------");
         System.out.println("Has seleccionado la opción de ELIMINAR UN ARTÍCULO.");
 
+        this.verListadoArticulos();
+
         // Solicitar al usuario el ID del producto a eliminar
 
         int idArticulo = this.ingresarIdArticulo();
@@ -265,6 +267,8 @@ public class MenuEmpleado {
     private void editarArticulo() {
         System.out.println("----------------------------------------------------");
         System.out.println("Has seleccionado la opción de EDITAR UN ARTICULO.");
+
+        this.verListadoArticulos();
 
         // Solicitar al usuario el ID del producto a eliminar
 
@@ -325,7 +329,7 @@ public class MenuEmpleado {
                 articuloEncontrado.setRubro(nuevoRubro);
 
                 System.out.println("-------------------------------------------");
-                System.out.println("ARTICULO ACTUALIZADO CORRECTAMENTE !!!!");
+                System.out.println("ARTICULO ACTUALIZADO CORRECTAMENTE");
                 System.out.println("-------------------------------------------");
                 break;
             case 2:
@@ -344,6 +348,8 @@ public class MenuEmpleado {
 
     private void mostrarYEditarStock() {
         System.out.println("Has seleccionado la opción de EDITAR STOCK.");
+
+        this.verListadoArticulos();
 
         // Solicitar al usuario el ID del producto a eliminar
 
