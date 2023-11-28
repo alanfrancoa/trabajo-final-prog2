@@ -138,7 +138,6 @@ public class MenuCliente {
 
         this.verListaDeArticulos();
 
-        System.out.println("Ingrese el código del artículo que desea comprar (0 para salir):");
         int codigoArticulo = this.ingresarCodigo();
 
         while (codigoArticulo != 0) {
@@ -154,7 +153,7 @@ public class MenuCliente {
             }
 
             System.out.println("Ingrese la cantidad que desea comprar:");
-            int cantidadIngresada = sc.nextInt();
+            int cantidadIngresada = sc.nextInt(); // HACER LA VALIDACION DE TIPO DE DATO
 
             // Verifica si hay suficiente stock
             if (articuloSeleccionado.getStock() < cantidadIngresada) {
@@ -166,14 +165,12 @@ public class MenuCliente {
 
             // Agrega el artículo al carrito
             Renglon productoAAgregar = new Renglon(cantidadIngresada, articuloSeleccionado);
-            carrito.agregar(productoAAgregar);
+
+            this.carrito.agregar(productoAAgregar);
 
             System.out.println("--------------------------------------------");
             System.out.println("Producto agregado al carrito");
-            System.out.println("-----------------------------------------");
-
-            // Actualiza el stock del artículo en la lista de artículos disponibles
-            articuloSeleccionado.setStock(articuloSeleccionado.getStock() - cantidadIngresada);
+            System.out.println("--------------------------------------------");
 
             // Vuelvo a preguntar para seguir o para terminar
             System.out.println("Ingrese el código del siguiente artículo que desea comprar (0 para salir):");
@@ -183,14 +180,14 @@ public class MenuCliente {
     }
 
     private void verCarrito() {
-        
+
         System.out.println("Has seleccionado la opción de VER CARRITO.");
         carrito.verCarrito();
 
     }
 
     private void finalizarCompra() {
-         System.out.println("Has seleccionado la opción de FINALIZAR COMPRA.");
+        System.out.println("Has seleccionado la opción de FINALIZAR COMPRA.");
         carrito.finalizarCompra(cliente, listaUsuarios);
     }
 
@@ -224,8 +221,6 @@ public class MenuCliente {
 
     }
 
-    // --------------------------- METODOS DEL MENU CLIENTE ---------------------------
-
     // Metodo que agrega dinero a la cuenta del cliente
     private void agregarDinero() {
 
@@ -254,7 +249,7 @@ public class MenuCliente {
 
         // Ingreso un monto a retirar
         System.out.print("Ingrese la cantidad de dinero a retirar: ");
-        double cantidadARetirar = sc.nextDouble();
+        double cantidadARetirar = this.ingresarSaldo();
 
         // Validaciones de la cantidad ingresada
 
@@ -270,7 +265,7 @@ public class MenuCliente {
         // ingresada
         if (this.cliente.getSaldo() < cantidadARetirar) {
             System.out.println("------------------------------------------------");
-            System.out.println("SALDO INSUFICIENTE para relaizar la operacion");
+            System.out.println("SALDO INSUFICIENTE para realizar la operacion");
             System.out.println("-------------------------------------------------");
             return;
         }
@@ -291,7 +286,7 @@ public class MenuCliente {
 
         // Ingreso el nombre del destinatario
         System.out.println("Ingrese el nombre del destinatario:");
-        String nombreDestinatario = sc.next();
+        String nombreDestinatario = sc.next(); // VALIDAR QUE ESTO SEA UN STRING
 
         // Verifico si exisnte un destinatario y guardo el resultado en una varaible de
         // tipo Cliente
@@ -311,7 +306,7 @@ public class MenuCliente {
         // Si me devuelve un Cliente, procedo con la transferencia
 
         // Ingreso la cantidad a transferir
-        
+
         double cantidadTransferir = this.ingresarCantidad();
 
         // Valido que la cantidad a transferir sea positiva
@@ -349,8 +344,8 @@ public class MenuCliente {
 
     }
 
-    // Metodos del menu Cliente
-
+    // --------------------------- METODOS DEL MENU CLIENTE ---------------------------
+   
     private Cliente validarExistenciaUsuario(String nombreIngresado) {
 
         // Parto con una premisa booleana
@@ -413,6 +408,7 @@ public class MenuCliente {
         while (true) {
             int codigoIngresado;
             try {
+                System.out.print("Ingrese el código del artículo que desea comprar (0 para salir):");
                 codigoIngresado = this.sc.nextInt();
                 return codigoIngresado;
             } catch (InputMismatchException e) {
@@ -464,7 +460,7 @@ public class MenuCliente {
         return articuloEcontrado;
     }
 
-    private double ingresarCantidad(){
+    private double ingresarCantidad() {
         while (true) {
             double cantidadIngresada;
             try {

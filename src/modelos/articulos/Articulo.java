@@ -59,14 +59,25 @@ public abstract class Articulo {
         this.rubro = rubro;
     }
 
+    public String getInfoRubro() {
+        char charRubro = this.getRubro();
+
+        String infoRubro;
+
+        if (charRubro == 'A') {
+            infoRubro = "A (Alimentos)";
+        } else if (charRubro == 'B') {
+            infoRubro = "B (Bebidas)";
+        } else {
+            infoRubro = "C (Cafeteria)";
+        }
+
+        return infoRubro;
+    };
+
     // Metodos abstractos
     public abstract double calcularPrecioFinal();
 
-    // Metodo toString()
-    @Override
-    public String toString() {
-        return "Articulo [id_articulo=" + id_articulo + ", nombre=" + nombre + ", precio_neto=" + precio_neto
-                + ", stock=" + stock + ", rubro=" + rubro + "]";
-    }
+    public abstract String toString();
 
 }

@@ -57,7 +57,7 @@ public class MenuEmpleado {
         System.out.println("---------------------------------------------");
         System.out.println("¿Desea editar este artículo?: ");
         System.out.println("1 - SI");
-        System.out.println("1 - NO");
+        System.out.println("2 - NO");
         System.out.println("---------------------------------------------");
         System.out.print("Por favor, elija una opción: ");
     }
@@ -248,14 +248,13 @@ public class MenuEmpleado {
         // Buscar el artículo por su ID
         Articulo articuloEncontrado = this.validarExistenciaArticulo(idArticulo);
 
-        // Si se encuentra el artículo, eliminarlo de la lista
         if (articuloEncontrado == null) {
             System.out.println("----------------------------------------------");
             System.out.println("ERROR: El artículo con ID " + idArticulo + " no se encuentra en el inventario.");
             System.out.println("----------------------------------------------");
             return;
         }
-
+        // Si se encuentra el artículo, eliminarlo de la lista
         empleado.eliminarArticulo(idArticulo);
 
         System.out.println("----------------------------------------------");
@@ -298,7 +297,6 @@ public class MenuEmpleado {
 
                 System.out.print("Nuevo nombre: ");
                 String nuevoNombre = sc.next();
-                articuloEncontrado.setNombre(nuevoNombre);
 
                 // Valido que sea un String el valor ingresado
                 if (!this.validarString(nuevoNombre)) {
@@ -322,11 +320,11 @@ public class MenuEmpleado {
 
                 System.out.print("Nuevo precio neto: ");
                 double nuevoPrecio = this.ingresarPrecioNeto();
-                articuloEncontrado.setPrecio_neto(nuevoPrecio);
 
                 System.out.print("Nuevo rubro: ");
                 char nuevoRubro = this.ingresarRubro();
-                articuloEncontrado.setRubro(nuevoRubro);
+
+                empleado.editarArticulo(articuloEncontrado, nuevoNombre, nuevoPrecio, nuevoRubro);
 
                 System.out.println("-------------------------------------------");
                 System.out.println("ARTICULO ACTUALIZADO CORRECTAMENTE");
@@ -501,7 +499,7 @@ public class MenuEmpleado {
                 this.mostrarOpcinesTipoDeArticulo();
                 opcion = this.sc.nextInt();
                 return opcion;
-            } catch (NumberFormatException e) {
+            } catch (InputMismatchException e) {
                 this.sc.nextLine();
                 System.out.println("----------------------------------------------");
                 System.out.println("ERROR: INGRESE UN VALOR NUMERICO");

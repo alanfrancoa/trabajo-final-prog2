@@ -25,7 +25,7 @@ public class Renglon {
     }
 
     public Articulo getProducto() {
-        return producto;
+        return this.producto;
     }
 
     public void setProducto(Articulo producto) {

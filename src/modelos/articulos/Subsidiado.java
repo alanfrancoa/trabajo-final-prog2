@@ -23,4 +23,14 @@ public class Subsidiado extends Articulo {
         
     }
 
+    @Override
+    public String toString() {
+
+        String infoArticuloSimple = "{ id_articulo: " + this.getId_articulo() + " nombre: " + this.getNombre()
+                + " precio_neto: " + this.getPrecio_neto() + " stock: " + this.getStock() + " tipo: S (SUBSIDIADO) "
+                + " rubro: " + this.getInfoRubro() + "}";
+
+        return infoArticuloSimple;
+    }
+
 }

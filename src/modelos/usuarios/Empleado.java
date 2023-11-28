@@ -34,15 +34,10 @@ public class Empleado extends UsuarioBase {
     }
 
     // Editar Articulo
-    public void editarArticulo(int codigoArticulo, Articulo articuloModificado, ArrayList<Articulo> listaDeArticulos) {
-        for (Articulo articulo : listaDeArticulos) {
-            if (articulo.getId_articulo() == codigoArticulo) {
-                articulo.setNombre(articuloModificado.getNombre());
-                articulo.setPrecio_neto(articuloModificado.getPrecio_neto());
-                articulo.setRubro(articuloModificado.getRubro());
-                break;
-            }
-        }
+    public void editarArticulo(Articulo articuloModificado, String nombreIngesado, double nuevoPrecio, char rubroIngreado) {
+        articuloModificado.setNombre(nombreIngesado);
+        articuloModificado.setPrecio_neto(nuevoPrecio);
+        articuloModificado.setRubro(rubroIngreado);
     }
 
     // Elinar Articulo
