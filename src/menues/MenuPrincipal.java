@@ -2,19 +2,23 @@ package menues;
 
 import java.util.List;
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 import interfaces.Usuario;
+import modelos.articulos.Articulo;
 
 public class MenuPrincipal {
 
     private boolean continuar = true;
     private Scanner sc;
     List<Usuario> listaUsuarios;
+    ArrayList<Articulo> listaArticulo;
 
-    public MenuPrincipal(Scanner sc, List<Usuario> listaUsuarios) {
+    public MenuPrincipal(Scanner sc, List<Usuario> listaUsuarios, ArrayList<Articulo> listaArticulo) {
         this.sc = sc;
         this.listaUsuarios = listaUsuarios;
+        this.listaArticulo = listaArticulo;
     }
 
     // Genericos
@@ -68,7 +72,7 @@ public class MenuPrincipal {
                 this.finalizar();
                 break;
             case 1:
-                MenuRegistroLogin mRegistroLogin = new MenuRegistroLogin(listaUsuarios, sc);
+                MenuRegistroLogin mRegistroLogin = new MenuRegistroLogin(listaUsuarios, sc, listaArticulo);
                 mRegistroLogin.iniciar();
                 break;
             default:

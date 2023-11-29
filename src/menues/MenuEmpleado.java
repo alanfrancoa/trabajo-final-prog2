@@ -1,7 +1,8 @@
 package menues;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.List;
+
 import java.util.Scanner;
 
 import modelos.articulos.Articulo;
@@ -23,10 +24,12 @@ public class MenuEmpleado {
     private boolean continuar = true;
     private Scanner sc;
     private Empleado empleado;
+    private ArrayList<Articulo> listaArticulos;
 
-    public MenuEmpleado(Scanner sc, Empleado empleado) {
+    public MenuEmpleado(Scanner sc, Empleado empleado, ArrayList<Articulo> listaArticulos) {
         this.sc = sc;
         this.empleado = empleado;
+        this.listaArticulos = listaArticulos;
     }
 
     private void mostrarOpciones() {
@@ -46,6 +49,7 @@ public class MenuEmpleado {
     private void mostrarOpcinesTipoDeArticulo() {
 
         System.out.println("---------------------------------------------");
+        System.out.println("Ingrese un tipo de articulo");
         System.out.println(" 1 - SUBSIDIADO");
         System.out.println(" 2 - DEMANDADO");
         System.out.println(" 3 - SIMPLE");
@@ -126,12 +130,8 @@ public class MenuEmpleado {
     }
 
     private void verListadoArticulos() {
-        System.out.println("Has seleccionado la opción de VER LISTADO DE ARTICULOS.");
-
-        // Acceder a la lista de artículos a través del Empleado
-        List<Articulo> stockArticulos = empleado.getListaDeArticulos();
-
-        if (stockArticulos == null) {
+    
+        if (this.listaArticulos == null) {
             System.out.println("----------------------------------------------");
             System.out.println("ERROR: NO HAY ARTICULOS EN LA LISTA");
             System.out.println("----------------------------------------------");
@@ -139,7 +139,7 @@ public class MenuEmpleado {
         }
 
         System.out.println("------------------- LISTA DE ARTICULOS -------------------");
-        for (Articulo articulo : stockArticulos) {
+        for (Articulo articulo : this.listaArticulos) {
 
             System.out.println(articulo.toString());
 
@@ -188,6 +188,7 @@ public class MenuEmpleado {
         // Si paso la validacion sigo con el registro del Articulo
 
         System.out.println("--------------------------------------.");
+        System.out.print("Ingrese el precio del articulo: ");
         double precioNetoIngresado = this.ingresarPrecioNeto();
         System.out.println("--------------------------------------.");
         System.out.print("Ingrese el stock del articulo: ");
@@ -203,19 +204,21 @@ public class MenuEmpleado {
         }
 
         System.out.println("--------------------------------------.");
+        
         int tipoIngresado = this.ingresarTipoDeArticulo();
 
         Articulo nuevoArticulo;
 
         switch (tipoIngresado) {
             case 1:
-                nuevoArticulo = new Subsidiado(idIngresado, nombreArticuloIngresado, precioNetoIngresado, tipoIngresado,
+                nuevoArticulo = new Subsidiado(idIngresado, nombreArticuloIngresado, precioNetoIngresado,
+                        stockIngresado, tipoIngresado,
                         rubroIngresado);
                 break;
             case 2:
                 System.out.print("Ingrese el stock deseado para el artículo Por Demanda: ");
                 int stockDeseado = this.ingresarStock();
-                nuevoArticulo = new Demandado(idIngresado, nombreArticuloIngresado, precioNetoIngresado, tipoIngresado,
+                nuevoArticulo = new Demandado(idIngresado, nombreArticuloIngresado, precioNetoIngresado, stockIngresado, tipoIngresado,
                         rubroIngresado, stockDeseado);
                 break;
             case 3:
@@ -224,7 +227,8 @@ public class MenuEmpleado {
                 break;
             default:
                 System.out.println("Tipo de artículo no válido. Se creará como Simple por defecto.");
-                nuevoArticulo = new Subsidiado(idIngresado, nombreArticuloIngresado, precioNetoIngresado, tipoIngresado,
+                nuevoArticulo = new Subsidiado(idIngresado, nombreArticuloIngresado, precioNetoIngresado,
+                        stockIngresado, tipoIngresado,
                         rubroIngresado);
         }
 
@@ -285,7 +289,7 @@ public class MenuEmpleado {
         }
 
         System.out.println("------------------------- ARTICULO ENCONTRADO -------------------------");
-        articuloEncontrado.toString();
+        empleado.mostrarArticulo(articuloEncontrado);
         System.out.println("-----------------------------------------------------------------------");
 
         int opcion = this.ingresarOpcionEditar();
@@ -318,7 +322,7 @@ public class MenuEmpleado {
                     return;
                 }
 
-                System.out.print("Nuevo precio neto: ");
+                System.out.print("Nuevo precio: ");
                 double nuevoPrecio = this.ingresarPrecioNeto();
 
                 System.out.print("Nuevo rubro: ");
@@ -396,7 +400,7 @@ public class MenuEmpleado {
         Articulo existeArticulo = null;
 
         // Recorro la lista de Usuarios
-        for (Articulo articulo : empleado.getListaDeArticulos()) {
+        for (Articulo articulo : empleado.getListaArticulos()) {
             if (articulo.getId_articulo() == idIngresado) {
                 existeArticulo = articulo;
                 break;
@@ -413,7 +417,7 @@ public class MenuEmpleado {
         boolean existeArticulo = false;
 
         // Recorro la lista de Usuarios
-        for (Articulo articulo : empleado.getListaDeArticulos()) {
+        for (Articulo articulo : empleado.getListaArticulos()) {
             if (articulo.getNombre().equalsIgnoreCase(nombreIngresado)) {
                 existeArticulo = true;
                 break;
@@ -449,7 +453,6 @@ public class MenuEmpleado {
         while (true) {
             double precioNeto = 0;
             try {
-                System.out.print("Ingrese el precio neto del artículo: ");
                 precioNeto = this.sc.nextDouble();
                 return precioNeto;
             } catch (NumberFormatException e) {

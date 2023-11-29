@@ -1,10 +1,12 @@
 package menues;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 import interfaces.Usuario;
+import modelos.articulos.Articulo;
 import modelos.usuarios.Cliente;
 import modelos.usuarios.Empleado;
 
@@ -14,12 +16,14 @@ public class MenuRegistroLogin {
     List<Usuario> listaUsuarios;
     private Scanner sc;
     private boolean continuar = true;
+    ArrayList<Articulo> listaArticulos;
     private static final String CLAVE_SECRETA_EMPLEADO = "pepepiola123";
 
     // Constructor
-    public MenuRegistroLogin(List<Usuario> listaUsuarios, Scanner sc) {
+    public MenuRegistroLogin(List<Usuario> listaUsuarios, Scanner sc, ArrayList<Articulo> listaArticulos) {
         this.listaUsuarios = listaUsuarios;
         this.sc = sc;
+        this.listaArticulos = listaArticulos;
     }
 
     // Genericos
@@ -212,7 +216,7 @@ public class MenuRegistroLogin {
             }
 
             // Si la clave secreta es correcta creo el nuevo empleado
-            Empleado nuevoEmpleado = new Empleado(nombreIngresado, claveIngresada);
+            Empleado nuevoEmpleado = new Empleado(nombreIngresado, claveIngresada, listaArticulos);
 
             // Guardo ese nuevo empleado en la lista de Usuarios
             listaUsuarios.add(nuevoEmpleado);
@@ -398,10 +402,10 @@ public class MenuRegistroLogin {
         } else if (usuarioEncontrado instanceof Empleado) {
 
             // Convierto al usuarioEncontrado en Empleado
-            Empleado empleado = new Empleado(nombreUsuario, claveUsuario);
+            Empleado empleado = (Empleado) usuarioEncontrado;
 
             // Instancio el menu de empleado que reciber el Scanner y el Empleado
-            MenuEmpleado mEmpleado = new MenuEmpleado(sc, empleado);
+            MenuEmpleado mEmpleado = new MenuEmpleado(sc, empleado, listaArticulos);
 
             // Ejecuto la funcion iniciar() de Menu Empleado
             mEmpleado.iniciar();

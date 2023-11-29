@@ -5,20 +5,15 @@ import java.util.ArrayList;
 import modelos.articulos.Articulo;
 
 public class Empleado extends UsuarioBase {
-
-    // Atributo de la clase Empleado 
     private ArrayList<Articulo> listaArticulos;
 
     // Constructor de la clase Empleado que herada el super() de la clase padre
-    // Usuario
-    public Empleado(String nombreUsuario, String claveUsuario) {
+    public Empleado(String nombreUsuario, String claveUsuario, ArrayList<Articulo> listaArticulos) {
         super(nombreUsuario, claveUsuario);
-        this.listaArticulos = new ArrayList<>();
-    }
+        this.listaArticulos = listaArticulos;
 
-    public ArrayList<Articulo> getListaDeArticulos() {
-        return this.listaArticulos;
     }
+    // ---------------- Getters ----------------
 
     // Implementación del método getTipoUsuario() para Empleado
     @Override
@@ -26,23 +21,35 @@ public class Empleado extends UsuarioBase {
         return "EMPLEADO";
     }
 
-    // ---------------- Metodos para el ABM articulos ----------------
+    public ArrayList<Articulo> getListaArticulos() {
+        return this.listaArticulos;
+    }
+
+    // ---------------- Metodos para el ABM articulos que hace el Empleado
+    // ----------------
 
     // Agregar Articulo
     public void agregarArticulo(Articulo nuevoArticulo) {
-        listaArticulos.add(nuevoArticulo);
+        this.getListaArticulos().add(nuevoArticulo);
     }
 
     // Editar Articulo
-    public void editarArticulo(Articulo articuloModificado, String nombreIngesado, double nuevoPrecio, char rubroIngreado) {
+    public void editarArticulo(Articulo articuloModificado, String nombreIngesado, double nuevoPrecio,
+            char rubroIngreado) {
         articuloModificado.setNombre(nombreIngesado);
         articuloModificado.setPrecio_neto(nuevoPrecio);
         articuloModificado.setRubro(rubroIngreado);
     }
 
-    // Elinar Articulo
+    // Eliminar Articulo
     public void eliminarArticulo(int codigoArticulo) {
-        listaArticulos.removeIf(articulo -> articulo.getId_articulo() == codigoArticulo);
+        this.getListaArticulos().removeIf(articulo -> articulo.getId_articulo() == codigoArticulo);
+    }
+
+    // Función para ver la lista de articulos
+    public void mostrarArticulo(Articulo articulo) {
+        System.out.println("{ id_articulo: " + articulo.getId_articulo() + ", nombre: " + articulo.getNombre()
+                + ", precio_neto: " + articulo.calcularPrecioFinal() + ", stock: " + articulo.getStock() + "}");
     }
 
     @Override
@@ -50,11 +57,4 @@ public class Empleado extends UsuarioBase {
         return "Empleado: " + this.getNombreUsuario();
     }
 
-   
-
-   
-
-
-
-    
 }

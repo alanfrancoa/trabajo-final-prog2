@@ -59,6 +59,7 @@ public abstract class Articulo {
         this.rubro = rubro;
     }
 
+    // ---------------- Métodos de la clase Artículo ----------------
     public String getInfoRubro() {
         char charRubro = this.getRubro();
 
@@ -75,7 +76,7 @@ public abstract class Articulo {
         return infoRubro;
     };
 
-    // Metodos abstractos
+    // ---------------- Métodos Abstractos ----------------
     public abstract double calcularPrecioFinal();
 
     public abstract String toString();

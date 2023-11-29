@@ -6,7 +6,7 @@ public class Demandado extends Articulo {
     private int stockDeseado;
 
     // Constructor
-    public Demandado(int id_articulo, String nombre, double precio_neto, int stock, char rubro, int stockDeseado) {
+    public Demandado(int id_articulo, String nombre, double precio_neto, int stock, int tipoIngresado, char rubro, int stockDeseado) {
         super(id_articulo, nombre, precio_neto, stock, rubro);
         this.stockDeseado = stockDeseado;
     }
@@ -16,7 +16,7 @@ public class Demandado extends Articulo {
         return this.stockDeseado;
     }
 
-    // Metodos abstractos
+    // ---------------- Metodos abstractos sobrescritos ----------------
     @Override
     public double calcularPrecioFinal() {
 

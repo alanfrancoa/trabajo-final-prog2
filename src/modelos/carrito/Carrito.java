@@ -12,13 +12,17 @@ import modelos.usuarios.Empleado;
 
 public class Carrito {
 
-    private Scanner sc = new Scanner(System.in);
+    // Atributos
+    private Scanner sc;
     private ArrayList<Renglon> listaCompra;
 
-    public Carrito() {
+    // Constructor
+    public Carrito(Scanner sc) {
         this.listaCompra = new ArrayList<>();
+        this.sc = sc;
     }
 
+    // ---------------- Metodos de la clase Carrito ----------------
     public void agregar(Renglon nuevoRenglon) {
         listaCompra.add(nuevoRenglon);
     }
@@ -38,11 +42,10 @@ public class Carrito {
         for (Renglon renglon : listaCompra) {
             Articulo producto = renglon.getProducto();
             int cantidad = renglon.getCantidad();
-            System.out.println("CANTIDAD: " + cantidad);
-            System.out.println("CODIGO: " + producto.getId_articulo());
-            System.out.println("NOMBRE: " + producto.getNombre());
-            System.out.println("PRECIO UNITARIO: " + producto.calcularPrecioFinal());
-            System.out.println("PRECIO TOTAL: " + renglon.calcularPrecioTotal());
+            System.out.println("[" + " CANTIDAD: " + cantidad + " ] [ " + "ID: " + producto.getId_articulo()
+                            + ", NOMBRE: " + producto.getNombre() + ", PRECIO (sin descuento): " + producto.getPrecio_neto()
+                            + ", RUBRO: " + producto.getInfoRubro() + ", PRECIO FINAL (con descuento): "
+                            + producto.calcularPrecioFinal() + " ]");
         }
         System.out.println("TOTAL A PAGAR: " + this.verMontoTotal());
         System.out.println("----------------------------------------------------");
@@ -86,6 +89,7 @@ public class Carrito {
         System.out.println("Desea finalizar la compra?");
         System.out.println("1 - SI");
         System.out.println("2 - NO");
+        System.out.print("Elija una opcion, por favor: ");
         int opcion = this.elegirOpcionFinalizarCompra();
 
         switch (opcion) {
@@ -93,17 +97,21 @@ public class Carrito {
                 System.out.println("----------------------------- FACTURA DE COMPRA -----------------------------");
 
                 // Muestra los detalles de cada artículo en el carrito
+                double totalAPagar = 0;
                 for (Renglon renglon : listaCompra) {
                     Articulo articulo = renglon.getProducto();
                     int cantidad = renglon.getCantidad();
 
-                    System.out.println("CANTIDAD: " + cantidad);
-                    System.out.println("CODIGO: " + articulo.getId_articulo());
-                    System.out.println("NOMBRE: " + articulo.getNombre());
-                    System.out.println("PRECIO UNITARIO: " + articulo.calcularPrecioFinal());
-                    System.out.println("RUBRO: " + articulo.getInfoRubro());
-                    System.out.println("PRECIO TOTAL: " + renglon.calcularPrecioTotal());
+                    System.out.println("[" + " CANTIDAD: " + cantidad + " ] [ " + "ID: " + articulo.getId_articulo()
+                            + ", NOMBRE: " + articulo.getNombre() + ", PRECIO-UNITARIO: " + articulo.getPrecio_neto()
+                            + ", RUBRO: " + articulo.getInfoRubro() + ", PRECIO FINAL: "
+                            + articulo.calcularPrecioFinal() + "  ] ");
+
+                    totalAPagar = this.verMontoTotal();
+
                 }
+
+                System.out.println("TOTAL A PAGAR: " + totalAPagar);
 
                 System.out.println("------------------------------------------------------------------------------");
 
@@ -151,7 +159,7 @@ public class Carrito {
             if (usuario instanceof Empleado) {
                 Empleado empleado = (Empleado) usuario;
 
-                for (Articulo producto : empleado.getListaDeArticulos()) {
+                for (Articulo producto : empleado.getListaArticulos()) {
                     if (producto.getId_articulo() == articulo.getId_articulo()) {
                         int productoStockActual = producto.getStock();
                         producto.setStock(productoStockActual - cantidad);

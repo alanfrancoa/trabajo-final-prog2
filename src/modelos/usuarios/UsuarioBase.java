@@ -14,7 +14,7 @@ public abstract class UsuarioBase implements Usuario {
         this.claveUsuario = claveUsuario;
     }
 
-    // Setters
+    // ---------------- Setters ----------------
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
@@ -23,19 +23,20 @@ public abstract class UsuarioBase implements Usuario {
         this.claveUsuario = claveUsuario;
     }
 
-    // Los getters se crearon como métodos implementados de la intefaz Usuario
-    public String getNombreUsuario(){
+    // ---------------- Getters implementados de la interfaz ----------------
+    public String getNombreUsuario() {
         return this.nombreUsuario;
     };
 
-    public String getClaveUsuario(){
+    public String getClaveUsuario() {
         return this.claveUsuario;
     };
 
-    // Este metodo sera implementado por las clases hijas
+    // ---------------- Getter de la interfaz Usuario que usaran las clases hijas
+    // ----------------
     public abstract String getTipoUsuario();
 
-    // Metodo toString()
+    // ---------------- Metodo toString() ----------------
     @Override
     public String toString() {
         return "Usuario [nombreUsuario=" + this.nombreUsuario +
